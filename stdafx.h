@@ -25,7 +25,7 @@ public:
 	~YUVData();
 	vector<YUVDataPix>& getBase();
 private:
-	vector<YUVDataPix> YUVPix;
+	vector<YUVDataPix> YUVPix;		//储存YUV的像素信息的向量
 };
 
 class Config
