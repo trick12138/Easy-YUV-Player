@@ -7,25 +7,15 @@ using namespace std;
 class YUVDataPix
 {
 public:
-	YUVDataPix();
-	~YUVDataPix();
-	UChar& getY();
-	UChar& getU();
-	UChar& getV();
+	YUVDataPix(){}
+	~YUVDataPix(){}
+	UChar& getY() { return Y; }
+	UChar& getU() { return U; }
+	UChar& getV() { return V; }
 private:
 	UChar Y;
 	UChar U;
 	UChar V;
-};
-
-class YUVData
-{
-public:
-	YUVData();
-	~YUVData();
-	vector<YUVDataPix>& getBase();
-private:
-	vector<YUVDataPix> YUVPix;		//储存YUV的像素信息的向量
 };
 
 class Config
@@ -46,4 +36,4 @@ private:
 	const char* path;
 };
 
-void initVideoMemory(Config& config,YUVData& yuvdata);
+void initVideoMemory(Config& config,vector<YUVDataPix>& yuvdata);

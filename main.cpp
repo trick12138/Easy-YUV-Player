@@ -1,12 +1,11 @@
 #include <iostream>
 #include <graphics.h>
-#include <vector>
 #include "stdafx.h"
 #include "typeDef.h"
 
 using namespace std;
 
-static void YUV2RGB(unsigned char Y, unsigned char U, unsigned char V,
+void YUV2RGB(unsigned char& Y, unsigned char& U, unsigned char& V,
 	vector<UChar>& R,vector<UChar>& G,vector<UChar>& B)
 {
 	if ((Y + (V - 128) * 1.4075) > 255)
@@ -37,14 +36,13 @@ int main(int argc,char** argv)
 	Config config(atoi(argv[1]),atoi(argv[2]),argv[3]);
 	
 	//创建储存视频像素的向量
-	YUVData yuvdata;
+	vector<YUVDataPix> yuvdata;
 	
 	//初始化内存
 	initVideoMemory(config, yuvdata);
 
 	//打印到屏幕
-	initgraph(config.getVideoWidth(), config.getVideoHight());				//初始化图形界面
-	vector<YUVDataPix>::iterator YUVIter = yuvdata.getBase().begin();		//用于处理YUV储存的迭代器
+	vector<YUVDataPix>::iterator YUVIter = yuvdata.begin();					//用于处理YUV储存的迭代器
 	const int videoHight = config.getVideoHight();							//视频的高
 	const int videoWidth = config.getVideoWidth();							//视频的宽
 	vector<UChar> R;														//用于输出的R，G，B分量
@@ -69,18 +67,19 @@ int main(int argc,char** argv)
 	*/
 	//用于测试的文件块写入
 	//FILE* fp = fopen("./out.yuv", "wb");
-	//将YUV转化成RGB
-	//for ( ; YUVIter != yuvdata.getBase().end(); ++YUVIter)
-	//{
-	//	R.push_back((((*YUVIter).getY() << 8) + ((*YUVIter).getV() << 8 + (*YUVIter).getV() << 5 + (*YUVIter).getV() << 2)) >> 8);
-	//	G.push_back((((*YUVIter).getY() << 8) - (((*YUVIter).getU() << 6) + ((*YUVIter).getU() << 5) + (*YUVIter).getU() << 2) - ((*YUVIter).getV() << 7) + ((*YUVIter).getV() << 4) + ((*YUVIter).getV() << 2) + (*YUVIter).getV()) >> 8);
-	//	B.push_back((((*YUVIter).getY() << 8) + ((*YUVIter).getU() << 9) + (*YUVIter).getU() << 3) >> 8);
-	//}
-	for (; YUVIter != yuvdata.getBase().end(); ++YUVIter)
+	//YUV转RGBv0.1
+	for (YUVIter = yuvdata.begin();YUVIter != yuvdata.end();++YUVIter)
 	{
 		YUV2RGB((*YUVIter).getY(), (*YUVIter).getU(), (*YUVIter).getV(), R, G, B);
 	}
-
+	vector<YUVDataPix>().swap(yuvdata);
+	while (!yuvdata.empty())
+	{
+		YUV2RGB(yuvdata[0].getY(),yuvdata[0].getU(),yuvdata[0].getV(), R, G, B);
+		yuvdata.erase(yuvdata.begin());
+		yuvdata.shrink_to_fit();
+	}
+	initgraph(config.getVideoWidth(), config.getVideoHight());				//初始化图形界面
 	for (RIter = R.begin(), GIter = G.begin(), BIter = B.begin(); RIter != R.end() ;delay_fps(30))
 	{
 		for(int i = 0 ;i < videoHight ;++i)

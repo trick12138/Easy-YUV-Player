@@ -4,20 +4,6 @@
 
 using namespace std;
 
-YUVDataPix::YUVDataPix(){}
-YUVDataPix::~YUVDataPix(){}
-UChar& YUVDataPix::getY() { return Y; }
-UChar& YUVDataPix::getU() { return U; }
-UChar& YUVDataPix::getV() { return V; }
-
-YUVData::YUVData(){}
-YUVData::~YUVData(){}
-
-vector<YUVDataPix>& YUVData::getBase()
-{
-	return YUVPix;
-}
-
 Config::Config(int VideoWidth, int VideoHight,char* Path) :VideoWidth(VideoWidth) ,VideoHight(VideoHight) ,ScanWay(S4_2_0) ,PackageWay(PLANER) ,path(Path) {}
 Config::Config(int VideoWidth, int VideoHight, short ScanWay, short PackageWay, char*& Path) :VideoWidth(VideoWidth), VideoHight(VideoHight), ScanWay(ScanWay), PackageWay(PackageWay), path(Path){}
 
@@ -27,7 +13,7 @@ const short& Config::getScanWay() { return ScanWay; }
 const short& Config::getPackageWay() { return PackageWay; }
 const char*& Config::getPath() { return path; }
 
-void initVideoMemory(Config& config, YUVData& yuvdata)
+void initVideoMemory(Config& config, vector<YUVDataPix>& yuvdata)
 {
 	UChar Y = 0;
 	UChar U = -127;
@@ -36,6 +22,8 @@ void initVideoMemory(Config& config, YUVData& yuvdata)
 	vector<UChar> posDY;
 	vector<UChar> posDU;
 	vector<UChar> posDV;
+	
+	YUVDataPix Pix;
 	
 	const int Hight = config.getVideoHight();
 	const int Width = config.getVideoWidth();
@@ -47,6 +35,9 @@ void initVideoMemory(Config& config, YUVData& yuvdata)
 	}
 
 	//读取文件
+	vector<UChar>::iterator YIter = posDY.begin();
+	vector<UChar>::iterator UIter = posDU.begin();
+	vector<UChar>::iterator VIter = posDV.begin();
 	while (!feof(fp))
 	{
 		//获取Y分量
@@ -80,21 +71,26 @@ void initVideoMemory(Config& config, YUVData& yuvdata)
 			}
 			posDV.insert(posDV.end(), posDV.end() - Width, posDV.end());
 		}
+
+		//写入
+		YIter = posDY.begin();
+		UIter = posDU.begin();
+		VIter = posDV.begin();
+		while (YIter != posDY.end() && UIter != posDU.end() && VIter != posDV.end())
+		{
+			Pix.getY() = *YIter;
+			Pix.getU() = *UIter;
+			Pix.getV() = *VIter;
+			yuvdata.push_back(Pix);
+			++YIter;
+			++UIter;
+			++VIter;
+		}
+		//清空每一帧的暂存信息
+		vector<UChar>().swap(posDY);
+		vector<UChar>().swap(posDU);
+		vector<UChar>().swap(posDV);
 	}
 
-	//写入
-	vector<UChar>::iterator YIter = posDY.begin();
-	vector<UChar>::iterator UIter = posDU.begin();
-	vector<UChar>::iterator VIter = posDV.begin();
-	YUVDataPix Pix;
-	while (YIter != posDY.end() && UIter != posDU.end() && VIter != posDV.end())
-	{
-		Pix.getY() = *YIter;
-		Pix.getU() = *UIter;
-		Pix.getV() = *VIter;
-		yuvdata.getBase().push_back(Pix);
-		++YIter;
-		++UIter;
-		++VIter;
-	}
+	fclose(fp);
 }
