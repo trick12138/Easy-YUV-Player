@@ -82,14 +82,16 @@ int main(int argc,char** argv)
 	initgraph(config.getVideoWidth(), config.getVideoHight());				//初始化图形界面
 	for (RIter = R.begin(), GIter = G.begin(), BIter = B.begin(); RIter != R.end() ;delay_fps(30))
 	{
+		delay_ms(0);
+		//打印视频图像
 		for(int i = 0 ;i < videoHight ;++i)
 			for (int j = 0; j < videoWidth; ++j)
 			{
 				putpixel(j, i, EGERGB(*RIter, *GIter, *BIter), nullptr);
 				++RIter, ++GIter, ++BIter;
 			}
-		delay_ms(0);
+		//打印CU的划分
+		system("pause");
 	}
-	system("pause");
 	return 0;
 }
