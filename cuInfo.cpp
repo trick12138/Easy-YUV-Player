@@ -180,6 +180,5 @@ void CUBitToPos(Config& config,vector<pair<short, short>>& leftTop, vector<pair<
         }
         leftTop.push_back(pair<short, short>(-1, -1));
         rightDown.push_back(pair<short, short>(-1, -1));
-        rightDown.push_back(pair<short, short>(-1, -1));
     }
 }

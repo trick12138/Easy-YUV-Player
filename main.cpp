@@ -107,7 +107,7 @@ int main(int argc,char** argv)
 			}
 		//打印CU的划分
 #if IFPRINTCUINFO
-		setfillcolor(BLACK);
+		setcolor(WHITE);
 		delay_ms(0);
 		while ((*leftTopIter).first != -1)
 		{
