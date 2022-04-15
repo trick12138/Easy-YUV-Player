@@ -139,10 +139,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cuInfo.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="VideoIO.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cuInfo.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="typeDef.h" />
   </ItemGroup>

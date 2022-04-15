@@ -4,14 +4,26 @@
 
 using namespace std;
 
-Config::Config(int VideoWidth, int VideoHight,char* Path) :VideoWidth(VideoWidth) ,VideoHight(VideoHight) ,ScanWay(S4_2_0) ,PackageWay(PLANER) ,path(Path) {}
-Config::Config(int VideoWidth, int VideoHight, short ScanWay, short PackageWay, char*& Path) :VideoWidth(VideoWidth), VideoHight(VideoHight), ScanWay(ScanWay), PackageWay(PackageWay), path(Path){}
+Config::Config(int VideoWidth, int VideoHight,char* Path)
+	:VideoWidth(VideoWidth) ,VideoHight(VideoHight) ,ScanWay(S4_2_0) ,PackageWay(PLANER) ,path(Path),LCUInWidthNum(0),LCUInHightNum(0) {}
+Config::Config(int VideoWidth, int VideoHight, short ScanWay, short PackageWay, char*& Path)
+	:VideoWidth(VideoWidth), VideoHight(VideoHight), ScanWay(ScanWay), PackageWay(PackageWay), path(Path),LCUInWidthNum(0),LCUInHightNum(0) {}
 
 const int& Config::getVideoWidth() { return VideoWidth; }
 const int& Config::getVideoHight() { return VideoHight; }
 const short& Config::getScanWay() { return ScanWay; }
 const short& Config::getPackageWay() { return PackageWay; }
 const char*& Config::getPath() { return path; }
+
+const int& Config::getLCUInWidthNum()
+{
+	return LCUInWidthNum;
+}
+
+const int& Config::getLCUInHightNum()
+{
+	return LCUInHightNum;
+}
 
 void initVideoMemory(Config& config, vector<YUVDataPix>& yuvdata)
 {

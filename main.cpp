@@ -1,7 +1,10 @@
 #include <iostream>
 #include <graphics.h>
+#include <fstream>
 #include "stdafx.h"
 #include "typeDef.h"
+#include "cuInfo.h"
+#define IFPRINTCUINFO 0
 
 using namespace std;
 
@@ -35,8 +38,19 @@ int main(int argc,char** argv)
 		return 0;
 	Config config(atoi(argv[1]),atoi(argv[2]),argv[3]);
 	
-	//创建储存视频像素的向量
+	//创建储存视频像素信息的向量
 	vector<YUVDataPix> yuvdata;
+
+#if IFPRINTCUINFO
+	//创建储存划分CU信息的向量
+	vector<pair<unsigned short, unsigned short>> leftTop;											//左上角的像素
+	vector<pair<unsigned short, unsigned short>> rightDown;										//右下角的像素
+	//打开文件并把CU信息读取出来
+	CUBitToPos(config,leftTop, rightDown);
+	//一个用于读取CU信息的迭代器
+	vector<pair<unsigned short, unsigned short>>::iterator leftTopIter = leftTop.begin();
+	vector<pair<unsigned short, unsigned short>>::iterator rightDownIter = rightDown.begin();
+#endif // IFPRINTCUINFO
 	
 	//初始化内存
 	initVideoMemory(config, yuvdata);
@@ -79,7 +93,8 @@ int main(int argc,char** argv)
 		yuvdata.erase(yuvdata.begin());
 		yuvdata.shrink_to_fit();
 	}
-	initgraph(config.getVideoWidth(), config.getVideoHight());				//初始化图形界面
+	initgraph(config.getVideoWidth(), 544);				//初始化图形界面
+
 	for (RIter = R.begin(), GIter = G.begin(), BIter = B.begin(); RIter != R.end() ;delay_fps(30))
 	{
 		delay_ms(0);
@@ -91,7 +106,20 @@ int main(int argc,char** argv)
 				++RIter, ++GIter, ++BIter;
 			}
 		//打印CU的划分
-		system("pause");
+#if IFPRINTCUINFO
+		setfillcolor(BLACK);
+		delay_ms(0);
+		while ((*leftTopIter).first != -1)
+		{
+			rectangle((*leftTopIter).first, (*leftTopIter).second, (*rightDownIter).first, (*rightDownIter).second);
+			++leftTopIter;
+			++rightDownIter;
+		}
+		++leftTopIter;
+		++rightDownIter;
+#endif // IFPRINTCUINFO
+
+		getch();
 	}
 	return 0;
 }

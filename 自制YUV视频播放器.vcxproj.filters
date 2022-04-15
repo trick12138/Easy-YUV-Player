@@ -21,12 +21,18 @@
     <ClCompile Include="VideoIO.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="cuInfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="typeDef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cuInfo.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

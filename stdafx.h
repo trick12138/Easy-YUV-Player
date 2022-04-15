@@ -28,12 +28,16 @@ public:
 	const short& getScanWay();
 	const short& getPackageWay();
 	const char*& getPath();
+	const int& getLCUInWidthNum();
+	const int& getLCUInHightNum();
 private:
 	const int VideoWidth;
 	const int VideoHight;
 	const short ScanWay;
 	const short PackageWay;
 	const char* path;
+	const int LCUInWidthNum;
+	const int LCUInHightNum;
 };
 
 void initVideoMemory(Config& config,vector<YUVDataPix>& yuvdata);
