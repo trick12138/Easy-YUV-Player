@@ -7,4 +7,4 @@
 #include <graphics.h>
 #include "stdafx.h"
 
-void CUBitToPos(Config& config, vector<pair<unsigned short, unsigned short>>& leftTop, vector<pair<unsigned short, unsigned short>>& rightDown);
+void CUBitToPos(Config& config, vector<pair<short, short>>& leftTop, vector<pair<short, short>>& rightDown);

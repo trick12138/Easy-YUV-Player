@@ -96,7 +96,7 @@ void CU()
     return;
 }
 
-void CUBitToPos(Config& config,vector<pair<unsigned short, unsigned short>>& leftTop, vector<pair<unsigned short, unsigned short>>& rightDown)
+void CUBitToPos(Config& config,vector<pair<short, short>>& leftTop, vector<pair<short, short>>& rightDown)
 {
     fstream file;
     file.open("./BestDepth.txt", ios::binary | ios::in);
@@ -165,12 +165,12 @@ void CUBitToPos(Config& config,vector<pair<unsigned short, unsigned short>>& lef
                         y += (BitToFourDepthBlocks[i] / 2) * g_BitToPos[i];
                     }
 
-                    leftTop.push_back(pair<int, int>(x, y));
-                    rightDown.push_back(pair<int, int>(x + g_BitToPos[*theCur], y + g_BitToPos[*theCur]));
+                    leftTop.push_back(pair<short, short>(x, y));
+                    rightDown.push_back(pair<short, short>(x + g_BitToPos[*theCur], y + g_BitToPos[*theCur]));
                     if (*theCur == -1)
                     {
-                        leftTop.push_back(pair<int, int>(-1, -1));
-                        rightDown.push_back(pair<int, int>(-1, -1));
+                        leftTop.push_back(pair<short, short>(-1, -1));
+                        rightDown.push_back(pair<short, short>(-1, -1));
                         return;
                     }
                     theCur = theCur + g_BitToConvert[*theCur];
@@ -178,7 +178,8 @@ void CUBitToPos(Config& config,vector<pair<unsigned short, unsigned short>>& lef
                 theBegin = theCur;
             }
         }
-        leftTop.push_back(pair<int, int>(-1, -1));
-        rightDown.push_back(pair<int, int>(-1, -1));
+        leftTop.push_back(pair<short, short>(-1, -1));
+        rightDown.push_back(pair<short, short>(-1, -1));
+        rightDown.push_back(pair<short, short>(-1, -1));
     }
 }

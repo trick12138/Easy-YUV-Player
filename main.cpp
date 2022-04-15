@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "typeDef.h"
 #include "cuInfo.h"
-#define IFPRINTCUINFO 0
+#define IFPRINTCUINFO 1
 
 using namespace std;
 
@@ -43,13 +43,13 @@ int main(int argc,char** argv)
 
 #if IFPRINTCUINFO
 	//创建储存划分CU信息的向量
-	vector<pair<unsigned short, unsigned short>> leftTop;											//左上角的像素
-	vector<pair<unsigned short, unsigned short>> rightDown;										//右下角的像素
+	vector<pair<short, short>> leftTop;											//左上角的像素
+	vector<pair<short, short>> rightDown;										//右下角的像素
 	//打开文件并把CU信息读取出来
 	CUBitToPos(config,leftTop, rightDown);
 	//一个用于读取CU信息的迭代器
-	vector<pair<unsigned short, unsigned short>>::iterator leftTopIter = leftTop.begin();
-	vector<pair<unsigned short, unsigned short>>::iterator rightDownIter = rightDown.begin();
+	vector<pair<short, short>>::iterator leftTopIter = leftTop.begin();
+	vector<pair<short, short>>::iterator rightDownIter = rightDown.begin();
 #endif // IFPRINTCUINFO
 	
 	//初始化内存
@@ -93,7 +93,7 @@ int main(int argc,char** argv)
 		yuvdata.erase(yuvdata.begin());
 		yuvdata.shrink_to_fit();
 	}
-	initgraph(config.getVideoWidth(), 544);				//初始化图形界面
+	initgraph(config.getVideoWidth(), config.getVideoHight());				//初始化图形界面
 
 	for (RIter = R.begin(), GIter = G.begin(), BIter = B.begin(); RIter != R.end() ;delay_fps(30))
 	{
